@@ -23,6 +23,27 @@ body {
     height: 100%;
     width: 100%;
 }
+#log_panel{
+    font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    word-break: normal;
+
+    overflow: auto;
+    resize: none;
+    width: 500px;
+    height: 500px;
+    margin-top: 10px;
+    margin-left: -340px;
+
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
 button {
     text-rendering: auto;
     letter-spacing: normal;

@@ -179,6 +179,9 @@ var iot_blockly = new Vue({
   el: '#iot_blockly',
   data: {
     workspace: Blockly.inject('content_blocks', options),
+    socket: io(),
+    show_logs: false,
+    logs: '',
   },
   methods: {
     generateCode: function(){
@@ -209,13 +212,20 @@ var iot_blockly = new Vue({
         });
       });
     },
+    toggleLogs: function(){
+      this.show_logs = !this.show_logs;
+    },
   },
   created: function(){
+    var self = this;
     this.$http.get('api/saved').then(function(resp){
       var xml = resp.data;
       Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), this.workspace);
     }, function(resp){
       console.log(resp);
+    });
+    this.socket.on('stdout', function(log){
+      self.logs += log;
     });
   }
 });

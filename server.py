@@ -6,6 +6,8 @@ import eventlet.wsgi
 import threading
 import os
 import subprocess
+from datetime import datetime
+import Queue
 
 TARGET_FILE_PATH = 'target/.gen_full.py'
 SAVED_BLOCKLY_XML = 'target/.blocks.xml'
@@ -16,6 +18,7 @@ sio = socketio.Server()
 flaskapp = Flask(__name__, static_url_path='')
 daemon_proc = None
 daemon_output_cv = threading.Condition()
+stdout_queue = Queue.Queue()
 # daemon_output_thread_started = threading.Semaphore(0)
 
 def daemon_output_thread():
@@ -24,14 +27,25 @@ def daemon_output_thread():
     while True:
         try:
             for line in iter(daemon_proc.stdout.readline, b''):
-                print(">>>"+line),
-                sio.emit('stdout', line)
+                now = datetime.now().replace(microsecond=0)
+                line = "[{}] {}".format(now, line)
+                print(line),
+                # sio.emit('stdout', line)
+                stdout_queue.put(line)
             print("Daemon exited")
         except Exception as e:
             print(e)
         print("Waiting for daemon...")
         daemon_output_cv.wait()
     daemon_output_cv.release()
+
+def daemon_output_sio_task():
+    while True:
+        try:
+            line = stdout_queue.get_nowait()
+            sio.emit('stdout', line)
+        except Queue.Empty as e:
+            sio.sleep(0.5)
 
 def start_daemon():
     def do_start_daemon():
@@ -96,7 +110,7 @@ def api_saved():
 
 if __name__ == '__main__':
 
-    # sio.start_background_task(daemon_output_thread)
+    sio.start_background_task(daemon_output_sio_task)
     threading.Thread(target=daemon_output_thread).start()
     start_daemon();
 

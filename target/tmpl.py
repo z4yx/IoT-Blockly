@@ -33,6 +33,6 @@ mqttc.subscribe("/#", 0)
 mqttc.loop_start()
 
 from gevent.wsgi import WSGIServer
-http_server_ = WSGIServer(('', 8080), flaskapp)
+http_server_ = WSGIServer(('', 8080), flaskapp, log=None)
 print("Program running...")
 http_server_.serve_forever()
