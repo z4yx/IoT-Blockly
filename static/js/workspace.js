@@ -58,6 +58,17 @@ Blockly.Blocks['onhttprequest'] = {
   }
 };
 
+Blockly.Blocks['extract_number'] = {
+  init: function() {
+    this.appendValueInput("input_val")
+        .setCheck("String")
+        .appendField("提取数值");
+    this.setOutput(true, "Number");
+    this.setColour(230);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
 // Blockly.Blocks['onsensorvalueupdate'] = {
 //   init: function() {
 //     this.jsonInit(onsensorvalueupdateJson);
@@ -97,7 +108,7 @@ Blockly.Python['onsensorvalueupdate'] = function(block) {
 Blockly.Python['sendactuatorcommand'] = function(block) {
   var text_node_name = block.getFieldValue('node_name');
   var text_actuator_name = block.getFieldValue('actuator_name');
-  var value_name = Blockly.Python.valueToCode(block, 'cmd', Blockly.Python.ORDER_ATOMIC);
+  var value_name = Blockly.Python.valueToCode(block, 'cmd', Blockly.Python.ORDER_COMMA);
 
   var code = "publish_paho.single('/control/'+" +
   				Blockly.Python.quote_(text_node_name) +
@@ -130,11 +141,18 @@ Blockly.Python['onhttprequest'] = function(block) {
   code += globals;
   code += Blockly.Python.INDENT+variable_args+" = request_path_.split('/')\n";
   code += statements_callback /*|| Blockly.Python.PASS*/;
-  code += Blockly.Python.INDENT+"return "+(value_resp || '')+"\n";
+  code += Blockly.Python.INDENT+"_http_ret_ = "+(value_resp || '')+"\n";
+  code += Blockly.Python.INDENT+"return '' if (_http_ret_ is None) else _http_ret_\n";
   return code;
 };
 
-Blockly.Python.addReservedWords("Flask,flaskapp,mqttc,mqtt_sub,os,sys,traceback");
+Blockly.Python['extract_number'] = function(block) {
+  var value_input_val = Blockly.Python.valueToCode(block, 'input_val', Blockly.Python.ORDER_COMMA);
+  var code = "float(re.search(r'[-+]?\\d+(\\.\\d*)?', "+value_input_val+").group())";
+  return [code, Blockly.Python.ORDER_FUNCTION_CALL];
+};
+
+Blockly.Python.addReservedWords("Flask,flaskapp,mqttc,mqtt_sub,os,re,sys,traceback");
 
 var toolbox = document.getElementById("toolbox");
 

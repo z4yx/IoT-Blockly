@@ -3,6 +3,7 @@ import paho.mqtt.client as mqtt_paho
 import paho.mqtt.publish as publish_paho
 from flask import Flask
 import os
+import re
 import sys
 import traceback
 
