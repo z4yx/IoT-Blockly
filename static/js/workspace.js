@@ -42,7 +42,7 @@ Blockly.Blocks['sendactuatorcommand'] = {
 Blockly.Blocks['onhttprequest'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("HTTP客户端访问“http://127.0.0.1/参数1/参数2/参数3/...”时");
+        .appendField("HTTP客户端访问“http://IP:8080/参数1/参数2/参数3/...”时");
     this.appendStatementInput("callback")
         .setCheck(null)
         .appendField("参数放入列表")
