@@ -1,6 +1,6 @@
 ###Install
 
-`apt install python-pip mosquitto python-flask python-eventlet`
+`apt install python-pip mosquitto python-flask python-eventlet python-gevent`
 
 `pip install paho-mqtt python-socketio`
 

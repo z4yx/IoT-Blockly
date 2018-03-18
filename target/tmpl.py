@@ -6,7 +6,7 @@ import os
 import re
 import sys
 import traceback
-import target_config
+from target_config import MQTT_BROKER
 
 sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
 mqttc = mqtt_paho.Client()
@@ -28,7 +28,7 @@ def mqtt_sub(topic_filter):
 
 """_relpaced_with_blocks_"""
 
-mqttc.connect(target_config.MQTT_BROKER, 1883, 60)
+mqttc.connect(MQTT_BROKER, 1883, 60)
 mqttc.subscribe("/#", 0)
 mqttc.loop_start()
 
