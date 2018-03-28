@@ -76,3 +76,8 @@ button:hover {
 button:active {
     border: 1px solid #888 !important;
 }
+.hiddenfile {
+    width: 0px;
+    height: 0px;
+    overflow: hidden;
+}

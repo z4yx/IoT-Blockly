@@ -11,11 +11,16 @@
   <div class="container">
     <div class="block">
       <div class="btn-bar" id="iot_blockly">
+        <button @click="uploadBlocks" id="button_upload" class="large"><i class="fa fa-upload" aria-hidden="true"></i></button>
+        <button @click="downloadBlocks" id="button_download" class="large"><i class="fa fa-download" aria-hidden="true"></i></button>
         <button @click="saveToServer" id="button_save" class="large"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
         <button @click="applyBlocks" id="button_run" class="primary large"><i class="fa fa-play" aria-hidden="true"></i></button>
         <button @click="toggleLogs" id="button_logs" class="large"><i class="fa fa-tasks" aria-hidden="true"></i></button>
         <br>
         <textarea id="log_panel" readonly="readonly" v-show="show_logs" v-model="logs"></textarea>
+        <div class="hiddenfile">
+          <input @change="fileSelected" name="upload" type="file" id="fileinput"/>
+        </div>
       </div>
       <div id="content_blocks" class="content"></div>
       <pre id="content_python" class="content"></pre>
@@ -356,6 +361,7 @@
   </category>
 </xml>
 
+  <script src="js/FileSaver.js"></script>
   <script src="js/socket.io.min.js"></script>
   <script src="js/vue.js"></script>
   <script src="js/vue-resource.min.js"></script>

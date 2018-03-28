@@ -208,10 +208,39 @@ var iot_blockly = new Vue({
     generateXml: function(){
       return Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.workspace));
     },
+    importXml: function(xml){
+      this.workspace.clear();
+      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), this.workspace);
+    },
     callSaveApi: function(xml, success){
       this.$http.post('api/saved', xml).then(success, function(resp){
         console.log(resp);
       });
+    },
+    uploadBlocks: function(){
+      document.getElementById('fileinput').click();
+    },
+    fileSelected: function(evt){
+      var vueObj = this;
+      var files = evt.target.files;
+      console.log(files);
+      if(files == 0)
+        return;
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        try{
+          // var parser = new DOMParser();
+          // var xmlDoc = parser.parseFromString(e.target.result,"text/xml");
+          vueObj.importXml(e.target.result);
+        }catch(err){
+          console.log(err);
+        }
+      };
+      reader.readAsText(files[0]);
+    },
+    downloadBlocks: function(){
+      var blob = new Blob([this.generateXml()], {type: "text/xml;charset=utf-8"});
+      saveAs(blob, "blockly.xml");
     },
     saveToServer: function(){
       var xml = this.generateXml();
@@ -238,7 +267,7 @@ var iot_blockly = new Vue({
     var self = this;
     this.$http.get('api/saved').then(function(resp){
       var xml = resp.data;
-      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), this.workspace);
+      self.importXml(xml);
     }, function(resp){
       console.log(resp);
     });
