@@ -16,12 +16,32 @@ body {
 .btn-bar{
     position: absolute;
     right: 20px;
-    top: 20px;
+    top: 5px;
     z-index: 100;
 }
-#content_blocks {
+.nav_tab{
+    display: inline-block;
+    text-align: center;
+    margin-right: 10px;
+    width: 80px;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    cursor: pointer;
+    padding: 5px 19px;
+}
+.nav_tab.active{
+    background-color: #eee;
+}
+.content {
     height: 100%;
     width: 100%;
+}
+#content_python {
+    padding: 1ex;
+    margin: 0;
+    border: 1px solid #ccc;
+    overflow: scroll;
+    box-sizing: border-box;
 }
 #log_panel{
     font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
@@ -80,4 +100,7 @@ button:active {
     width: 0px;
     height: 0px;
     overflow: hidden;
+}
+.hide {
+    display: none !important;
 }

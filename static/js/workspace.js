@@ -200,8 +200,24 @@ var iot_blockly = new Vue({
     socket: io(),
     show_logs: false,
     logs: '',
+    tab_index: 'blocks',
+  },
+  watch: {
+    tab_index: function(newVal){
+      if(newVal=='python'){
+        document.getElementById('content_blocks').classList.add("hide");
+        document.getElementById('content_python').innerHTML = this.htmlEntities(this.generateCode());
+        document.getElementById('content_python').classList.remove("hide");
+      }else{
+        document.getElementById('content_blocks').classList.remove("hide");
+        document.getElementById('content_python').classList.add("hide");
+      }
+    },
   },
   methods: {
+    htmlEntities(str) {
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    },
     generateCode: function(){
       return Blockly.Python.workspaceToCode(this.workspace);
     },
