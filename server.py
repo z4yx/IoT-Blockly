@@ -81,9 +81,8 @@ def restart_daemon():
 def api_apply():
     try:
         gen_code = request.data
-        gen_code = target_template.replace('"""_relpaced_with_blocks_"""', gen_code)
         with open(TARGET_FILE_PATH,'w') as f: 
-            f.write(gen_code.encode('utf-8'))
+            f.write(gen_code)
         os.chmod(TARGET_FILE_PATH, 0774)
 
         restart_daemon()
@@ -99,6 +98,10 @@ def handle_root():
 @flaskapp.route('/static/<path:path>')
 def send_static(path):
     return send_from_directory('static', path)
+
+@flaskapp.route('/api/template')
+def send_tmpl():
+    return target_template
 
 @flaskapp.route('/api/saved',methods=['POST', 'GET'])
 def api_saved():

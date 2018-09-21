@@ -37,7 +37,7 @@ body {
     width: 100%;
 }
 #content_python {
-    padding: 1ex;
+    padding: 2ex 1ex;
     margin: 0;
     border: 1px solid #ccc;
     overflow: scroll;

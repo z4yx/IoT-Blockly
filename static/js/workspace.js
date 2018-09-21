@@ -201,6 +201,7 @@ var iot_blockly = new Vue({
     show_logs: false,
     logs: '',
     tab_index: 'blocks',
+    code_tmpl: '"""_relpaced_with_blocks_"""',
   },
   watch: {
     tab_index: function(newVal){
@@ -211,6 +212,7 @@ var iot_blockly = new Vue({
       }else{
         document.getElementById('content_blocks').classList.remove("hide");
         document.getElementById('content_python').classList.add("hide");
+        Blockly.svgResize(this.workspace);
       }
     },
   },
@@ -219,7 +221,7 @@ var iot_blockly = new Vue({
       return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     },
     generateCode: function(){
-      return Blockly.Python.workspaceToCode(this.workspace);
+      return this.code_tmpl.replace(/"""_relpaced_with_blocks_"""/, Blockly.Python.workspaceToCode(this.workspace));
     },
     generateXml: function(){
       return Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.workspace));
@@ -284,6 +286,11 @@ var iot_blockly = new Vue({
     this.$http.get('api/saved').then(function(resp){
       var xml = resp.data;
       self.importXml(xml);
+    }, function(resp){
+      console.log(resp);
+    });
+    this.$http.get('api/template').then(function(resp){
+      self.code_tmpl = resp.data;
     }, function(resp){
       console.log(resp);
     });

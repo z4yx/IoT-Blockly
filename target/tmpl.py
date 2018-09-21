@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import paho.mqtt.client as mqtt_paho
 import paho.mqtt.publish as publish_paho
 from flask import Flask
@@ -26,7 +27,11 @@ def mqtt_sub(topic_filter):
         mqttc.message_callback_add(topic_filter, func_with_catch)
     return reg_cb
 
+# ------ Blockly Code BEGIN ------
+
 """_relpaced_with_blocks_"""
+
+# ------ Blockly Code END ------
 
 mqttc.connect(MQTT_BROKER, 1883, 60)
 mqttc.subscribe("/#", 0)
